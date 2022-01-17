@@ -21,7 +21,7 @@ class ProductController {
             const userWishlist = await WishlistService.getWishlistByUserId(user.customerid);
             let wishlistProds = await WishlistService.findAndCountAllWishlist(userWishlist.wishlistid);
 
-            
+
             for (let i = 0; i < wishlistProds.count; i++) {
                 wishlistArr.push(wishlistProds.rows[i].productid);
             }
@@ -51,12 +51,12 @@ class ProductController {
         const data = await ProductsService.listProduct(term, limit, offset);
         const response = getPagingData(data, page, limit);
         let cartItems = await CartService.countCartItems(cart.orderid);
-        
+
         response.items.forEach(item => {
             item.isLike = false;
         });
         response.items.forEach(item => {
-            if(wishlistArr.includes(item.productid)) {
+            if (wishlistArr.includes(item.productid)) {
                 item.isLike = true;
             }
         });
@@ -73,18 +73,18 @@ class ProductController {
 
     // [POST] /products/filter/:slug
     filter = async (req, res, next) => {
-        req.query.price_start=parseFloat(req.query.price_start);
-        req.query.price_end=parseFloat(req.query.price_end);
-        const { name, price_start, price_end, brand, color, page, size} = req.query;
+        req.query.price_start = parseFloat(req.query.price_start);
+        req.query.price_end = parseFloat(req.query.price_end);
+        const { name, price_start, price_end, brand, color, page, size } = req.query;
         const { limit, offset } = getPagination(page - 1, size);
-        const data = await ProductsService.filter(color, price_start, price_end, name, brand,limit, offset);
+        const data = await ProductsService.filter(color, price_start, price_end, name, brand, limit, offset);
         const response = getPagingData(data, page, limit);
         res.render('products/products', {
-                    products: response.items,
-                    totalPages: response.totalPages,
-                    currentPage: response.currentPage,
-                    totalItems: response.totalItems,
-                });
+            products: response.items,
+            totalPages: response.totalPages,
+            currentPage: response.currentPage,
+            totalItems: response.totalItems,
+        });
     }
     // filter = async (req, res, next) => {
     //     const { page, size, color, price_start, price_end } = req.body;
