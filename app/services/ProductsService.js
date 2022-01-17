@@ -36,7 +36,10 @@ exports.listProduct = (term, limit, offset) => {
     });
 }
 
-exports.filter = async (color, price_start, price_end, name, brand, limit, offset) => {
+exports.filter = async (color, price_start, price_end, name, brand, sortByPrice, limit, offset) => {
+    if(!sortByPrice) {
+        sortByPrice ='ASC'
+    }
     const result = await models.products.findAndCountAll({
         where: {
             color: { [Op.iLike]: `%${color}%` },
@@ -47,7 +50,7 @@ exports.filter = async (color, price_start, price_end, name, brand, limit, offse
             brand: { [Op.iLike]: `%${brand}%` },
         },
         order: [
-            ['price', 'ASC'],
+            ['price', sortByPrice],
         ],
         limit: limit,
         offset: offset,
@@ -107,4 +110,24 @@ exports.loadFeedbacks = async(id) => {
         },
         raw: true
     });
+}
+
+
+exports.loadRelatedProducts = async(id, brand, price, limit) => {
+    const result = await models.products.findAll({
+        where: {
+            productid: {  [Op.ne]: id  },
+            [Op.or]: [
+                {
+                    brand: { [Op.iLike]: `%${brand}%` },
+                },
+                {
+                  price: price
+                }
+              ]
+        },
+        raw: true,
+        limit: limit,
+    });
+    return result;
 }

@@ -5,7 +5,7 @@ module.exports = {
     DB: "dfbs6670bg8rs3",
     // HOST: "localhost",
     // USER: "postgres",
-    // PASSWORD: "1234",
+    // PASSWORD: "19120667",
     // DB: "deadshoes",
     SESSION_SECRET: "secret",
     dialect: "postgres",
