@@ -159,8 +159,15 @@
                                             <button class="btn-flat btn-hover btn-cart-add" value="{{productid}}">
                                                 <i class="fas fa-shopping-cart"></i>
                                             </button>
-                                            <button class="btn-flat btn-hover btn-wishlít-add" value="{{productid}}">
-                                                <i class="fas fa-heart"></i>
+                                            {{#if user}}
+                                            <button class="btn-flat btn-hover btn-wishlist-add" value="{{productid}}">
+                                                {{!-- <i class="fas fa-heart"></i> --}}
+                                                {{!-- <i class="far fa-heart"></i> --}}
+                                                {{#if this.isLike}}
+                                                <i class="heart-icon like"></i>
+                                                {{else}}
+                                                <i class="heart-icon"></i>
+                                                {{/if}}
                                             </button>
                                         </div>
                                         <div class="product-card-name">
